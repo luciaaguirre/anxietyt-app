@@ -5,18 +5,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addItem = (event) => {
         event.preventDefault();
-        const text = input.ariaValueMax.trim();
+        const text = input.value.trim(  );
         if(!text) {
             return;
         }
 
         const li =document.createElement('li');
         li.innerHTML = `
-        <input type = "checkbox" class="checkbox">
+        <input type = "checkbox" class= "checkbox">
         <span>${text}</span>
         `;
 
-        li.textContent = text;
+        // li.textContent = text;
         list.appendChild(li);
         input.value = '';
     }
