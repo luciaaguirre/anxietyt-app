@@ -166,7 +166,10 @@ body {
     display: flex;
     gap: 10px;
     margin-right: auto;
+}
 
+#list li.completed span {
+    text-decoration: 2px line-through #ff6f91;
 }
 
 .edit-buttons button {
