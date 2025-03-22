@@ -19,8 +19,21 @@ document.addEventListener('DOMContentLoaded', () => {
             <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
             </div>
         `;
+        const checkbox = li.querySelector('.checkbox')
 
-        // li.textContent = text;
+        const editBtn = li.querySelector('.edit-btn');
+        editBtn.addEventListener('click', () => {
+            if(!checkbox.checked) {
+                input.value = li.querySelector('span').textContent;
+            }
+        })
+
+        li.querySelector('.delete-btn').addEventListener('click', () => {
+            li.remove();
+        })
+
+        
+
         list.appendChild(li);
         input.value = '';
     }
