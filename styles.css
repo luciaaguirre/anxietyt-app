@@ -158,5 +158,40 @@ body {
     flex: 1;
     margin-left: 10px;
     word-wrap: break-word;
-    
+
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 10px;
+    margin-right: auto;
+
+}
+
+.edit-buttons button {
+    background-color: rgba(250, 212, 221, 0.214);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+}
+
+.edit-buttons button:hover {
+    transform: scale(1.2);
+}
+
+.edit-buttons .edit-btn {
+    background: #ffbf00;
+}
+
+.edit-buttons delete-btn {
+    background: #ff6f91;
 }
