@@ -4,14 +4,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const list = document.getElementById('list')
 
     const addItem = (event) => {
+        event.preventDefault();
         const text = input.ariaValueMax.trim();
         if(!text) {
             return;
         }
 
         const li =document.createElement('li');
+        li.innerHTML = `
+        <input type = "checkbox" class="checkbox">
+        <span>${text}</span>
+        `;
+
         li.textContent = text;
         list.appendChild(li);
         input.value = '';
     }
+
+    addBtn.addEventListener('click',addItem);
+    input.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter'){
+            addItem(e);
+        }
+    })
 });
