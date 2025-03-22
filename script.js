@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
         li.innerHTML = `
         <input type = "checkbox" class= "checkbox">
         <span>${text}</span>
+        <div class= "edit-buttons">
+            <button class="edit-btn"><i class="fa-solid fa-pen"> </i> </button>
+            <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+            </div>
         `;
 
         // li.textContent = text;
