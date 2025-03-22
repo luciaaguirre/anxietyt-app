@@ -41,7 +41,7 @@ body {
     border-radius: 20px;
     box-shadow: 0 0 100px rgba(0 0 0 .5);
     border: 3px solid rgba(255 255 255 .2);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(30px);
 }
 
 .todo-app h1 {
@@ -100,7 +100,7 @@ body {
 
 }
 
-.task-list {
+.list {
     width: 100%;
 }
 
