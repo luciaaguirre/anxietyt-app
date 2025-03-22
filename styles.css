@@ -129,8 +129,8 @@ body {
 -webkit-appearance: none;
 -moz-appearance: none;
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border: 2px solid rgba(255 255 255 .2);
     background: transparent;
     border-radius: 50%;
@@ -142,4 +142,21 @@ body {
     background-color: palevioletred;
     transform: scale(1.1rem);
 
+}
+
+#list li .checkbox:checked::before {
+    content: '\2713';
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+
+}
+
+#list li span {
+    flex: 1;
+    margin-left: 10px;
+    word-wrap: break-word;
+    
 }
