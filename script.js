@@ -3,22 +3,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const addBtn = document.getElementById('add-btn');
     const list = document.getElementById('list');
 
+    const Confetti = () => {
+        const duration = 5 * 1000, 
+            animationEnd = Date.now() + duration;
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        (function frame() {
+            const timeLeft = animationEnd - Date.now(),
+                ticks = Math.max(200, 500 * (timeLeft / duration));
+
+            confetti({
+                particleCount: 1,
+                startVelocity: 0,
+                ticks: ticks,
+                origin: {
+                    x: Math.random(),
+                    y: Math.random() * 0.8 - 0.2,
+                },
+                colors: ["#ffffff"],
+                shapes: ["circle"],
+                gravity: randomInRange(0.4, 0.6),
+                scalar: randomInRange(0.4, 1),
+                drift: randomInRange(-0.4, 0.4),
+            });
+
+            if (timeLeft > 0) {
+                requestAnimationFrame(frame);
+            }
+        })();
+    };
+
+    const completedProgress = () => {
+        const totalItems = list.querySelectorAll('.checkbox').length;
+        const checkedItems = list.querySelectorAll('.checkbox:checked').length;
+
+        if (totalItems > 0 && checkedItems === totalItems) {
+            Confetti();
+        }
+    };
+
     const addItem = (text, completed = false) => {
         text = text || input.value.trim();
-        if (!text) {
-            return;
-        }
+        if (!text) return;
 
         const li = document.createElement('li');
         li.innerHTML = `
             <input type="checkbox" class="checkbox" ${completed ? 'checked' : ''}/>
-            <span>${text}</span>
+            <span class="task-text">${text}</span>
             <div class="edit-buttons">
-                <button class="edit-btn"><i class="fa-solid fa-pen"> </i></button>
+                <button class="edit-btn"><i class="fa-solid fa-pen"></i></button>
                 <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
             </div>
         `;
+
         const checkbox = li.querySelector('.checkbox');
+        const taskText = li.querySelector('.task-text');
         const editBtn = li.querySelector('.edit-btn');
 
         if (completed) {
@@ -34,16 +76,38 @@ document.addEventListener('DOMContentLoaded', () => {
             editBtn.disabled = isChecked;
             editBtn.style.opacity = isChecked ? '0.5' : '1';
             editBtn.style.pointerEvents = isChecked ? 'none' : 'auto';
+            completedProgress();
         });
 
+        // 🛠️ ✅ Edit Function: Allows Inline Editing
         editBtn.addEventListener('click', () => {
             if (!checkbox.checked) {
-                input.value = li.querySelector('span').textContent;
+                const inputField = document.createElement('input');
+                inputField.type = 'text';
+                inputField.value = taskText.textContent;
+                inputField.classList.add('edit-input');
+
+                li.replaceChild(inputField, taskText);
+                inputField.focus();
+
+                // 🖊️ Save on blur or Enter
+                inputField.addEventListener('blur', saveEdit);
+                inputField.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        saveEdit();
+                    }
+                });
+
+                function saveEdit() {
+                    taskText.textContent = inputField.value.trim() || text;
+                    li.replaceChild(taskText, inputField);
+                }
             }
         });
 
         li.querySelector('.delete-btn').addEventListener('click', () => {
             li.remove();
+            completedProgress();
         });
 
         list.appendChild(li);
@@ -51,13 +115,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     addBtn.addEventListener('click', (e) => {
-        e.preventDefault();  
+        e.preventDefault();
         addItem();
     });
 
     input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            e.preventDefault(); 
+            e.preventDefault();
             addItem();
         }
     });
