@@ -45,6 +45,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const saveItemToLocalStorage = () => {
+        const items = Array.from(list.querySelectorAll('li')).map(li => ({
+            text: li.querySelector('.task-text').textContent,
+            completed: li.querySelector('.checkbox').checked
+        }));
+
+        localStorage.setItem('items', JSON.stringify(items));
+    };
+
+    const loadItemsFromLocalStorage = () => {
+        const savedItems = JSON.parse(localStorage.getItem('items')) || [];
+        savedItems.forEach(({ text, completed }) => addItem(text, completed));
+    };
+
     const addItem = (text, completed = false) => {
         text = text || input.value.trim();
         if (!text) return;
@@ -76,10 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
             editBtn.disabled = isChecked;
             editBtn.style.opacity = isChecked ? '0.5' : '1';
             editBtn.style.pointerEvents = isChecked ? 'none' : 'auto';
+            saveItemToLocalStorage();
             completedProgress();
         });
 
-        // 🛠️ ✅ Edit Function: Allows Inline Editing
         editBtn.addEventListener('click', () => {
             if (!checkbox.checked) {
                 const inputField = document.createElement('input');
@@ -90,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.replaceChild(inputField, taskText);
                 inputField.focus();
 
-                // 🖊️ Save on blur or Enter
                 inputField.addEventListener('blur', saveEdit);
                 inputField.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
@@ -101,17 +114,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 function saveEdit() {
                     taskText.textContent = inputField.value.trim() || text;
                     li.replaceChild(taskText, inputField);
+                    saveItemToLocalStorage();
                 }
             }
         });
 
         li.querySelector('.delete-btn').addEventListener('click', () => {
             li.remove();
+            saveItemToLocalStorage();
             completedProgress();
         });
 
         list.appendChild(li);
         input.value = '';
+        saveItemToLocalStorage(); 
     };
 
     addBtn.addEventListener('click', (e) => {
@@ -125,4 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
             addItem();
         }
     });
+
+    loadItemsFromLocalStorage();
 });
